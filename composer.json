@@ -15,6 +15,9 @@
         "illuminate/filesystem": "~5.3",
         "illuminate/support": "~5.3"
     },
+    "require-dev": {
+        "filp/whoops": "~2.1"
+    },
     "autoload": {
         "files": [
             "helpers.php"

@@ -2,6 +2,7 @@
 
 namespace EklundChristopher\ViewPress;
 
+use Exception;
 use EklundChristopher\ViewPress\Events\Action;
 use EklundChristopher\ViewPress\Events\Filter;
 
@@ -164,5 +165,28 @@ class Application
     public function view($template, array $data = [])
     {
         return $this->view->make($template, $data);
+    }
+    
+    /**
+     * Run a controller method from a specific view.
+     *
+     * @param  string  $action
+     * @return void
+     */
+    public function routeThrough($action)
+    {
+        list ($controller, $method) = explode('@', $action);
+
+        if (! class_exists($controller)) {
+            throw new Exception(sprintf("Class '%s' not found", $controller));
+        }
+
+        if (! method_exists($controller, $method)) {
+            throw new Exception(sprintf("Call to undefined method %s::%s", $controller, $method));
+        }
+
+        $response = call_user_func_array([$controller, $method], []);
+
+        return is_arraY($response) ? $response : [];
     }
 }

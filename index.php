@@ -40,8 +40,8 @@ try {
     $resolver->register('blade', function () use ($filesystem, $app) {
         $compiler = new BladeCompiler($filesystem, $app->getStoragePath());
 
-        $compiler->directive('through', function ($expression) use ($app) {
-            return "<?php EklundChristopher\\ViewPress\\Route::through(${expression}); ?>";
+        $compiler->directive('through', function ($expression) use ($app, $compiler) {
+            return '<?php extract($viewpress->routeThrough('.$expression.')); ?>';
         });
 
         return new CompilerEngine($compiler, $filesystem);
@@ -57,6 +57,7 @@ try {
         new Dispatcher(new Container)
     ));
 
+    $app->view->share('viewpress', $app);
     extract($app->view->getShared());
 
     $app->action('after_setup_theme', 15)->bind(Actions\AfterThemeSetup::class);
