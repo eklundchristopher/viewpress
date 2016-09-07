@@ -1,0 +1,24 @@
+{
+    "name": "eklundchristopher/viewpress",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Christopher Eklund",
+            "email": "eklundchristopher@gmail.com"
+        }
+    ],
+    "require": {
+        "illuminate/view": "~5.2",
+        "illuminate/events": "~5.2",
+        "illuminate/filesystem": "~5.2",
+        "illuminate/support": "~5.2"
+    },
+    "autoload": {
+        "files": [
+            "helpers.php"
+        ],
+        "psr-4": {
+            "EklundChristopher\\ViewPress\\": "src/"
+        }
+    }
+}
