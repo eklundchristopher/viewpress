@@ -13,10 +13,12 @@ Domain Path:    /resources/langs
 Text Domain:    viewpress
 */
 
+use Whoops\Run as Whoops;
 use Illuminate\View\Factory;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;
 use Illuminate\View\FileViewFinder;
+use Whoops\Handler\PrettyPageHandler;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\View\Engines\PhpEngine;
 use EklundChristopher\ViewPress\Actions;
@@ -29,6 +31,20 @@ use EklundChristopher\ViewPress\Application;
 define('VIEWPRESS', __FILE__);
 
 try {
+
+    // Register a Whoops handler, unless one has already been registered.
+    if (class_exists(Whoops::class)) {
+        $whoops = new Whoops;
+        $handlers = array_filter($whoops->getHandlers(), function ($handler) {
+            return $handler instanceof \Whoops\Handler\Handler;
+        });
+
+        if (empty($handlers)) {
+            $whoops->pushHandler(new PrettyPageHandler);
+            $whoops->register();
+        }
+    }
+
 
     $app = new Application;
 
