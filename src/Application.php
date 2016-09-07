@@ -36,20 +36,6 @@ class Application
     protected $viewsPath;
 
     /**
-     * Holds the routes path.
-     *
-     * @var string
-     */
-    protected $routesPath;
-
-    /**
-     * Holds the routes status.
-     *
-     * @var boolean
-     */
-    protected $routes = true;
-
-    /**
      * Instantiate a new ViewPress instance.
      *
      * @return void
@@ -128,37 +114,6 @@ class Application
     public function getViewsPath()
     {
         return apply_filters('viewpress_views_path', $this->viewsPath);
-    }
-
-    /**
-     * Set the routes path.
-     *
-     * @param  string  $routesPath
-     * @return void
-     */
-    public function setRoutesPath($routesPath)
-    {
-        $this->routesPath = $routesPath;
-    }
-
-    /**
-     * Get the routes path.
-     *
-     * @return string
-     */
-    public function getRoutesPath()
-    {
-        return apply_filters('viewpress_routes_path', $this->routesPath);
-    }
-
-    /**
-     * Check whether the application uses routes or not.
-     *
-     * @return boolean
-     */
-    public function usesRoutes()
-    {
-        return apply_filters('viewpress_settings_routes', $this->routes);
     }
 
     /**

@@ -4,7 +4,7 @@ namespace EklundChristopher\ViewPress\Filters;
 
 use EklundChristopher\ViewPress\Application;
 
-class ViewHandler extends RouteHandler
+class ViewHandler
 {
     /**
      * Holds the Application implementation.
@@ -56,7 +56,6 @@ class ViewHandler extends RouteHandler
     protected function getRelativePath($template)
     {
         $patterns = [
-            $this->app->getRoutesPath(),
             $this->app->getViewsPath(),
             get_stylesheet_directory(),
             get_template_directory(),

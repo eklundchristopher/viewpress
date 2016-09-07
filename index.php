@@ -34,12 +34,17 @@ try {
 
     $app->setStoragePath(__DIR__.'/storage/views');
     $app->setViewsPath(get_stylesheet_directory().'/resources/views');
-    $app->setRoutesPath(get_stylesheet_directory().'/routes');
 
     list ($filesystem, $resolver) = [new Filesystem, new EngineResolver];
 
     $resolver->register('blade', function () use ($filesystem, $app) {
-        return new CompilerEngine(new BladeCompiler($filesystem, $app->getStoragePath()), $filesystem);
+        $compiler = new BladeCompiler($filesystem, $app->getStoragePath());
+
+        $compiler->directive('through', function ($expression) use ($app) {
+            return "<?php EklundChristopher\\ViewPress\\Route::through(${expression}); ?>";
+        });
+
+        return new CompilerEngine($compiler, $filesystem);
     });
 
     $resolver->register('php', function () {

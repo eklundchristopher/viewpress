@@ -32,8 +32,6 @@ class AfterThemeSetup
      */
     public function handle()
     {
-        $this->app->filter('template_include', 15)->bind(
-            $this->app->usesRoutes() ? Filters\RouteHandler::class : Filters\ViewHandler::class
-        );
+        $this->app->filter('template_include', 15)->bind(Filters\ViewHandler::class);
     }
 }

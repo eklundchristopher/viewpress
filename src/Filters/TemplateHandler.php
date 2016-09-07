@@ -80,8 +80,8 @@ abstract class TemplateHandler
             return $this->loadTemplate($template);
         }
 
-        if (file_exists($path = $this->app->getRoutesPath().'/'.$template)) {
-            return $path;
+        if ($this->app->view->exists($this->stripExtension($template))) {
+            return $template;
         }
 
         if (locate_template($template)) {
@@ -119,5 +119,16 @@ abstract class TemplateHandler
         }
 
         return null;
+    }
+
+    /**
+     * Get the relative path starting from the active theme directory.
+     *
+     * @param  string  $template
+     * @return string
+     */
+    protected function stripExtension($template)
+    {
+        return str_ireplace(['.blade.php', '.php'], null, $template);
     }
 }

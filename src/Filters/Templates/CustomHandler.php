@@ -59,7 +59,7 @@ class CustomHandler
     }
 
     /**
-     * Get all the files within the routes directory.
+     * Get all the files within the views directory.
      *
      * @return array
      */
@@ -68,7 +68,7 @@ class CustomHandler
         $filesystem = $this->app->view->getFinder()->getFilesystem();
 
         return $filesystem->allFiles(
-            $this->app->getRoutesPath()
+            $this->app->getViewsPath()
         );
     }
 
@@ -80,7 +80,7 @@ class CustomHandler
      */
     protected function getFileKey(SplFileInfo $file)
     {
-        $key = $this->app->getRoutesPath().'/'.$file->getRelativePathname();
+        $key = $this->app->getViewsPath().'/'.$file->getRelativePathname();
 
         $key = trim(str_ireplace([get_template_directory(), get_stylesheet_directory()], null, $key), '/');
 
