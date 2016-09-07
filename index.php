@@ -13,8 +13,6 @@ Domain Path:    /resources/langs
 Text Domain:    viewpress
 */
 
-require_once __DIR__.'/vendor/autoload.php';
-
 use Illuminate\View\Factory;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;

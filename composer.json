@@ -1,5 +1,6 @@
 {
     "name": "eklundchristopher/viewpress",
+    "type": "wordpress-plugin",
     "license": "MIT",
     "authors": [
         {
@@ -8,10 +9,11 @@
         }
     ],
     "require": {
-        "illuminate/view": "~5.2",
-        "illuminate/events": "~5.2",
-        "illuminate/filesystem": "~5.2",
-        "illuminate/support": "~5.2"
+        "composer/installers": "~1.2",
+        "illuminate/view": "~5.3",
+        "illuminate/events": "~5.3",
+        "illuminate/filesystem": "~5.3",
+        "illuminate/support": "~5.3"
     },
     "autoload": {
         "files": [
