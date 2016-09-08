@@ -49,7 +49,7 @@ try {
     $app = new Application;
 
     $app->setStoragePath(__DIR__.'/storage/views');
-    $app->setViewsPath(get_stylesheet_directory().'/resources/views');
+    $app->setViewsPath(get_stylesheet_directory().'/views');
 
     list ($filesystem, $resolver) = [new Filesystem, new EngineResolver];
 

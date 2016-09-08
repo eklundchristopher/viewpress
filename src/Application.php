@@ -93,7 +93,7 @@ class Application
      */
     public function getStoragePath()
     {
-        return apply_filters('viewpress__storage_path', $this->storagePath);
+        return apply_filters('viewpress_storage_path', $this->storagePath);
     }
 
     /**
