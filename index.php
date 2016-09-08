@@ -78,8 +78,6 @@ try {
         new Dispatcher(new Container)
     ));
 
-    require_once get_stylesheet_directory().'/index.php';
-
     $app->view->share('__viewpress', $app);
     extract($app->view->getShared());
 
