@@ -32,6 +32,11 @@ define('VIEWPRESS', __FILE__);
 
 try {
 
+    // Include Composer dependencies if found.
+    if (is_file($composer = __DIR__.'/vendor/autoload.php')) {
+        require_once $composer;
+    }
+
     // Register a Whoops handler, unless one has already been registered.
     if (class_exists(Whoops::class)) {
         $whoops = new Whoops;
@@ -72,6 +77,8 @@ try {
         new FileViewFinder($filesystem, [$app->getViewsPath()]),
         new Dispatcher(new Container)
     ));
+
+    require_once get_stylesheet_directory().'/index.php';
 
     $app->view->share('__viewpress', $app);
     extract($app->view->getShared());
