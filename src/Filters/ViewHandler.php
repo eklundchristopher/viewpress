@@ -33,7 +33,7 @@ class ViewHandler
     public function handle($template)
     {
         $path = $this->getRelativePath($template);
-
+        
         return $this->app->view($path)->render(function ($view, $content) {
             if ($engine = $view->getEngine() and ! method_exists($engine, 'getCompiler')) {
                 return $view->getPath();

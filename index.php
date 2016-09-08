@@ -78,6 +78,7 @@ try {
         new Dispatcher(new Container)
     ));
 
+
     $app->view->share('__viewpress', $app);
     extract($app->view->getShared());
 

@@ -185,11 +185,11 @@ class Application
             throw new Exception(sprintf("Call to undefined method %s::%s", $controller, $method));
         }
 
-        $response = call_user_func_array([$controller, $method], []);
+        $response = call_user_func_array([new $controller, $method], []);
 
         unset($response['__viewpress']);
         unset($response['__env']);
 
-        return is_arraY($response) ? $response : [];
+        return is_array($response) ? $response : [];
     }
 }

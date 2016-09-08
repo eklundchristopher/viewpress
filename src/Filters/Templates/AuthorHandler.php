@@ -13,7 +13,7 @@ class AuthorHandler extends Handler
      * ./authors/{nicename}.php
      * ./authors/{id}.php
      * ./authors/author.php
-     * ./articles/archive.php
+     * ./types/archive.php
      * ./index.php
      *
      * @param  array  $templates
@@ -29,7 +29,7 @@ class AuthorHandler extends Handler
         }
 
         $templates[] = 'authors/author.php';
-        $templates[] = 'articles/archive.php';
+        $templates[] = 'types/archive.php';
         $templates[] = 'index.php';
 
         return $templates;

@@ -11,7 +11,7 @@ class FrontPageHandler extends Handler
      *
      * ./frontpage.php
      * ./home.php
-     * ./articles/single.php
+     * ./types/single.php
      * ./index.php
      *
      * @param  array  $templates
@@ -21,7 +21,7 @@ class FrontPageHandler extends Handler
     {
         $templates[] = 'frontpage.php';
         $templates[] = 'home.php';
-        $templates[] = 'articles/single.php';
+        $templates[] = 'types/single.php';
         $templates[] = 'index.php';
 
         return $templates;

@@ -9,8 +9,8 @@ class DateHandler extends Handler
     /**
      * Return an array of templates in order of precedence.
      *
-     * ./articles/date.php
-     * ./articles/archive.php
+     * ./types/date.php
+     * ./types/archive.php
      * ./index.php
      *
      * @param  array  $templates
@@ -18,8 +18,8 @@ class DateHandler extends Handler
      */
     public function templates(array $templates)
     {
-        $templates[] = 'articles/date.php';
-        $templates[] = 'articles/archive.php';
+        $templates[] = 'types/date.php';
+        $templates[] = 'types/archive.php';
         $templates[] = 'index.php';
 
         return $templates;

@@ -10,10 +10,10 @@ class PageHandler extends Handler
      * Return an array of templates in order of precedence.
      *
      * {template}
-     * ./articles/page/{slug}.php
-     * ./articles/page/{id}.php
-     * ./articles/page/single.php
-     * ./articles/single.php
+     * ./types/page/{slug}.php
+     * ./types/page/{id}.php
+     * ./types/page/single.php
+     * ./types/single.php
      * ./singular.php
      * ./index.php
      *
@@ -31,15 +31,15 @@ class PageHandler extends Handler
         }
 
         if ($name = (! $name and $id and $post = get_queried_object()) ? $post->post_name : $name) {
-            $templates[] = sprintf('articles/page/%s.php', $name);
+            $templates[] = sprintf('types/page/%s.php', $name);
         }
 
         if ($id) {
-            $templates[] = sprintf('articles/page/%d.php', (int) $id);
+            $templates[] = sprintf('types/page/%d.php', (int) $id);
         }
 
-        $templates[] = 'articles/page/single.php';
-        $templates[] = 'articles/single.php';
+        $templates[] = 'types/page/single.php';
+        $templates[] = 'types/single.php';
         $templates[] = 'singular.php';
         $templates[] = 'index.php';
 

@@ -13,7 +13,7 @@ class AttachmentHandler extends Handler
      * ./attachments/{subtype}.php
      * ./attachments/{type}.php
      * ./attachments/attachment.php
-     * ./articles/single.php
+     * ./types/single.php
      * ./index.php
      *
      * @param  array  $templates
@@ -37,7 +37,7 @@ class AttachmentHandler extends Handler
         }
 
         $templates[] = 'attachments/attachment.php';
-        $templates[] = 'articles/single.php';
+        $templates[] = 'types/single.php';
         $templates[] = 'index.php';
 
         return $templates;

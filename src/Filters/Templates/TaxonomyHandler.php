@@ -13,7 +13,7 @@ class TaxonomyHandler extends Handler
      * ./taxonomies/{type}/{id}.php
      * ./taxonomies/{type}/taxonomy.php
      * ./taxonomies/taxonomy.php
-     * ./articles/archive.php
+     * ./types/archive.php
      * ./index.php
      *
      * @param  array  $templates
@@ -30,7 +30,7 @@ class TaxonomyHandler extends Handler
         }
 
         $templates[] = 'taxonomies/taxonomy.php';
-        $templates[] = 'articles/archive.php';
+        $templates[] = 'types/archive.php';
         $templates[] = 'index.php';
 
         return $templates;
