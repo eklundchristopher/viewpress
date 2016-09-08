@@ -16,6 +16,6 @@ class BladeCompiler extends Compiler
     {
         $content = parent::compileString($value);
 
-        return $content.'<?php exit; ?>';
+        return trim($content).PHP_EOL.'<?php exit; ?>';
     }
 }
