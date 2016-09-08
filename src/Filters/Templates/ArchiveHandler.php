@@ -9,8 +9,8 @@ class ArchiveHandler extends Handler
     /**
      * Return an array of templates in order of precedence.
      *
-     * ./posts/{type}/archive.php
-     * ./posts/archive.php
+     * ./articles/{type}/archive.php
+     * ./articles/archive.php
      * ./index.php
      *
      * @param  array  $templates
@@ -23,11 +23,11 @@ class ArchiveHandler extends Handler
             $object = get_post_type_object($posttype);
 
             if ($object->has_archive) {
-                $templates[] = sprintf('posts/%s/archive.php', $posttype);
+                $templates[] = sprintf('articles/%s/archive.php', $posttype);
             }
         }
 
-        $templates[] = 'posts/archive.php';
+        $templates[] = 'articles/archive.php';
         $templates[] = 'index.php';
 
         return $templates;

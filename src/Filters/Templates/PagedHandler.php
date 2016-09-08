@@ -9,7 +9,7 @@ class PagedHandler extends Handler
     /**
      * Return an array of templates in order of precedence.
      *
-     * ./posts/paged.php
+     * ./articles/paged.php
      * ./index.php
      *
      * @param  array  $templates
@@ -17,7 +17,7 @@ class PagedHandler extends Handler
      */
     public function templates(array $templates)
     {
-        $templates[] = 'posts/paged.php';
+        $templates[] = 'articles/paged.php';
         $templates[] = 'index.php';
 
         return $templates;

@@ -187,6 +187,9 @@ class Application
 
         $response = call_user_func_array([$controller, $method], []);
 
+        unset($response['__viewpress']);
+        unset($response['__env']);
+
         return is_arraY($response) ? $response : [];
     }
 }

@@ -9,10 +9,10 @@ class SingleHandler extends Handler
     /**
      * Return an array of templates in order of precedence.
      *
-     * ./posts/{type}/{slug}.php
-     * ./posts/{type}/{id}.php
-     * ./posts/{type}/single.php
-     * ./posts/single.php
+     * ./articles/{type}/{slug}.php
+     * ./articles/{type}/{id}.php
+     * ./articles/{type}/single.php
+     * ./articles/single.php
      * ./singular.php
      * ./index.php
      *
@@ -23,13 +23,13 @@ class SingleHandler extends Handler
     {
         if ($object = get_queried_object()) {
             if (! empty($object->post_type)) {
-                $templates[] = sprintf('posts/%s/%s.php', $object->post_type, $object->post_name);
-                $templates[] = sprintf('posts/%s/%d.php', $object->post_type, $object->ID);
-                $templates[] = sprintf('posts/%s/single.php', $object->post_type);
+                $templates[] = sprintf('articles/%s/%s.php', $object->post_type, $object->post_name);
+                $templates[] = sprintf('articles/%s/%d.php', $object->post_type, $object->ID);
+                $templates[] = sprintf('articles/%s/single.php', $object->post_type);
             }
         }
 
-        $templates[] = 'posts/single.php';
+        $templates[] = 'articles/single.php';
         $templates[] = 'singular.php';
         $templates[] = 'index.php';
 

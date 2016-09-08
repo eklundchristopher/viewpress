@@ -9,9 +9,9 @@ class EmbedHandler extends Handler
     /**
      * Return an array of templates in order of precedence.
      *
-     * ./posts/{type}/embed/{format}.php
-     * ./posts/{type}/embed/standard.php
-     * ./posts/embed.php
+     * ./articles/{type}/embed/{format}.php
+     * ./articles/{type}/embed/standard.php
+     * ./articles/embed.php
      * ./index.php
      *
      * @param  array  $templates
@@ -23,13 +23,13 @@ class EmbedHandler extends Handler
 
         if (! empty($object->post_type)) {
             if ($format = get_post_format($object)) {
-                $templates[] = sprintf('posts/%s/embed/%s.php', $object->post_type, $format);
+                $templates[] = sprintf('articles/%s/embed/%s.php', $object->post_type, $format);
             }
 
-            $templates[] = sprintf('posts/%s/embed/standard.php', $object->post_type);
+            $templates[] = sprintf('articles/%s/embed/standard.php', $object->post_type);
         }
 
-        $templates[] = 'posts/embed.php';
+        $templates[] = 'articles/embed.php';
         $templates[] = 'index.php';
 
         return $templates;

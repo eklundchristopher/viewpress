@@ -57,7 +57,7 @@ try {
         $compiler = new BladeCompiler($filesystem, $app->getStoragePath());
 
         $compiler->directive('through', function ($expression) use ($app, $compiler) {
-            return '<?php extract($viewpress->routeThrough('.$expression.')); ?>';
+            return '<?php extract($__viewpress->routeThrough('.$expression.')); ?>';
         });
 
         return new CompilerEngine($compiler, $filesystem);
@@ -73,7 +73,7 @@ try {
         new Dispatcher(new Container)
     ));
 
-    $app->view->share('viewpress', $app);
+    $app->view->share('__viewpress', $app);
     extract($app->view->getShared());
 
     $app->action('after_setup_theme', 15)->bind(Actions\AfterThemeSetup::class);
