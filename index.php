@@ -25,8 +25,8 @@ use EklundChristopher\ViewPress\Actions;
 use EklundChristopher\ViewPress\Filters;
 use Illuminate\View\Engines\CompilerEngine;
 use Illuminate\View\Engines\EngineResolver;
-use Illuminate\View\Compilers\BladeCompiler;
 use EklundChristopher\ViewPress\Application;
+use EklundChristopher\ViewPress\BladeCompiler;
 
 define('VIEWPRESS', __FILE__);
 
