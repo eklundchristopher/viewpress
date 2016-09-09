@@ -1,4 +1,4 @@
-![ViewPress](/resources/docs/heading.jpg)
+![ViewPress](/resources/docs/heading.jpg?v=4)
 
 More documentation to come...
 
