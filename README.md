@@ -1,1 +1,1 @@
-# ViewPress
+![ViewPress](/resources/docs/heading.jpg)
