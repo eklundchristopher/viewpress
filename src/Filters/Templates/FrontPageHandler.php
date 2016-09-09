@@ -19,6 +19,7 @@ class FrontPageHandler extends Handler
      */
     public function templates(array $templates)
     {
+        $templates[] = 'front-page.php';
         $templates[] = 'frontpage.php';
         $templates[] = 'home.php';
         $templates[] = 'types/single.php';
