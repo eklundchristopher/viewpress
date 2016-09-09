@@ -53,11 +53,13 @@ try {
 
     $app = new Application;
 
+    // Set the default ViewPress directory paths.
     $app->setStoragePath(__DIR__.'/storage/views');
     $app->setViewsPath(get_stylesheet_directory().'/views');
 
     list ($filesystem, $resolver) = [new Filesystem, new EngineResolver];
 
+    // Register the view Blade compiler.
     $resolver->register('blade', function () use ($filesystem, $app) {
         $compiler = new BladeCompiler($filesystem, $app->getStoragePath());
 
@@ -68,10 +70,12 @@ try {
         return new CompilerEngine($compiler, $filesystem);
     });
 
+    // Register the view PHP compiler.
     $resolver->register('php', function () {
         return new PhpEngine;
     });
 
+    // Register the view factory.
     $app->register('view', new Factory(
         $resolver,
         new FileViewFinder($filesystem, [$app->getViewsPath()]),
@@ -79,11 +83,19 @@ try {
     ));
 
 
+    // Prevent non-ViewPress themes from breaking.
+    if (! $app->view->exists('index')) {
+        return;
+    }
+
+
     $app->view->share('__viewpress', $app);
     extract($app->view->getShared());
 
+    // Register the various action events.
     $app->action('after_setup_theme', 15)->bind(Actions\AfterThemeSetup::class);
 
+    // Register the various filter events.
     $app->filter('index_template', 15)->bind(Filters\Templates\IndexHandler::class);
     $app->filter('404_template', 15)->bind(Filters\Templates\NotFoundHandler::class);
     $app->filter('archive_template', 15)->bind(Filters\Templates\ArchiveHandler::class);
