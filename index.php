@@ -25,8 +25,8 @@ use EklundChristopher\ViewPress\Actions;
 use EklundChristopher\ViewPress\Filters;
 use Illuminate\View\Engines\CompilerEngine;
 use Illuminate\View\Engines\EngineResolver;
+use Illuminate\View\Compilers\BladeCompiler;
 use EklundChristopher\ViewPress\Application;
-use EklundChristopher\ViewPress\BladeCompiler;
 
 define('VIEWPRESS', __FILE__);
 
@@ -113,8 +113,15 @@ try {
     $app->filter('singular_template', 15)->bind(Filters\Templates\SingularHandler::class);
     $app->filter('attachment_template', 15)->bind(Filters\Templates\AttachmentHandler::class);
     $app->filter('embed_template', 15)->bind(Filters\Templates\EmbedHandler::class);
+    $app->filter('get_search_form', 15)->bind(Filters\SearchFormHandler::class);
     
     $app->filter('theme_page_templates', 15)->bind(Filters\Templates\CustomHandler::class);
+
+    add_action('wp_after_admin_bar_render', function () {
+        if (! is_admin()) {
+            exit;
+        }
+    }, 15);
 
 } catch (Exception $e) {
     // ...
