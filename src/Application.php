@@ -93,7 +93,7 @@ class Application
      */
     public function getStoragePath()
     {
-        return apply_filters('viewpress_storage_path', $this->storagePath);
+        return $this->storagePath;
     }
 
     /**
@@ -114,7 +114,7 @@ class Application
      */
     public function getViewsPath()
     {
-        return apply_filters('viewpress_views_path', $this->viewsPath);
+        return $this->viewsPath;
     }
 
     /**
@@ -165,6 +165,18 @@ class Application
     public function view($template, array $data = [])
     {
         return $this->view->make($template, $data);
+    }
+
+    /**
+     * Declare a variable through the @declare directive.
+     *
+     * @param  string  $name
+     * @param  mixed  $value
+     * @return array
+     */
+    public function declareVariable($name, $value)
+    {
+        return [$name => $value];
     }
     
     /**

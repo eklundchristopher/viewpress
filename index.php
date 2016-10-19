@@ -50,79 +50,78 @@ try {
         }
     }
 
+    if (! is_admin()) {
+        $app = new Application;
 
-    $app = new Application;
+        if (! is_dir($storagePath = __DIR__.'/compiled/'.wp_get_theme()->stylesheet)) {
+            mkdir($storagePath);
+        }
 
-    // Set the default ViewPress directory paths.
-    $app->setStoragePath(__DIR__.'/storage/views');
-    $app->setViewsPath(get_stylesheet_directory().'/views');
+        // Set the default ViewPress directory paths.
+        $app->setStoragePath($storagePath);
+        $app->setViewsPath(get_stylesheet_directory().'/views');
 
-    list ($filesystem, $resolver) = [new Filesystem, new EngineResolver];
+        list ($filesystem, $resolver) = [new Filesystem, new EngineResolver];
 
-    // Register the view Blade compiler.
-    $resolver->register('blade', function () use ($filesystem, $app) {
+        // Register the view Blade compiler.
         $compiler = new BladeCompiler($filesystem, $app->getStoragePath());
 
-        $compiler->directive('through', function ($expression) use ($app, $compiler) {
-            return '<?php extract($__viewpress->routeThrough('.$expression.')); ?>';
+        $resolver->register('blade', function () use ($compiler, $filesystem, $app) {
+            // Declare variables using @declare('var', 'value')
+            $compiler->directive('declare', function ($expression) {
+                return '<?php extract($__viewpress->declareVariable('.$expression.')); ?>';
+            });
+
+            // Route a view file through a specific controller method, using @through('Controller@method')
+            $compiler->directive('through', function ($expression) use ($app, $compiler) {
+                return '<?php if (is_array($variables = $__viewpress->routeThrough('.$expression.'))): extract($__variables); endif; ?>';
+            });
+
+            return new CompilerEngine($compiler, $filesystem);
         });
 
-        return new CompilerEngine($compiler, $filesystem);
-    });
+        // Register the view PHP compiler.
+        $resolver->register('php', function () {
+            return new PhpEngine;
+        });
 
-    // Register the view PHP compiler.
-    $resolver->register('php', function () {
-        return new PhpEngine;
-    });
-
-    // Register the view factory.
-    $app->register('view', new Factory(
-        $resolver,
-        new FileViewFinder($filesystem, [$app->getViewsPath()]),
-        new Dispatcher(new Container)
-    ));
+        // Register the view factory.
+        $app->register('view', new Factory(
+            $resolver,
+            new FileViewFinder($filesystem, [$app->getViewsPath()]),
+            new Dispatcher(new Container)
+        ));
 
 
-    // Prevent non-ViewPress themes from breaking.
-    if (! $app->view->exists('index')) {
-        return;
+        $app->view->share('__viewpress', $app);
+        extract($app->view->getShared());
+
+        // Register the various action events.
+        $app->action('after_setup_theme', 15)->bind(Actions\AfterThemeSetup::class);
+
+        // Register the various filter events.
+        $app->filter('index_template', 15)->bind(Filters\Templates\IndexHandler::class);
+        $app->filter('404_template', 15)->bind(Filters\Templates\NotFoundHandler::class);
+        $app->filter('archive_template', 15)->bind(Filters\Templates\ArchiveHandler::class);
+        $app->filter('author_template', 15)->bind(Filters\Templates\AuthorHandler::class);
+        $app->filter('category_template', 15)->bind(Filters\Templates\CategoryHandler::class);
+        $app->filter('tag_template', 15)->bind(Filters\Templates\TagHandler::class);
+        $app->filter('taxonomy_template', 15)->bind(Filters\Templates\TaxonomyHandler::class);
+        $app->filter('date_template', 15)->bind(Filters\Templates\DateHandler::class);
+        $app->filter('home_template', 15)->bind(Filters\Templates\HomeHandler::class);
+        $app->filter('frontpage_template', 15)->bind(Filters\Templates\FrontPageHandler::class);
+        $app->filter('page_template', 15)->bind(Filters\Templates\PageHandler::class);
+        $app->filter('paged_template', 15)->bind(Filters\Templates\PagedHandler::class);
+        $app->filter('search_template', 15)->bind(Filters\Templates\SearchHandler::class);
+        $app->filter('single_template', 15)->bind(Filters\Templates\SingleHandler::class);
+        $app->filter('singular_template', 15)->bind(Filters\Templates\SingularHandler::class);
+        $app->filter('attachment_template', 15)->bind(Filters\Templates\AttachmentHandler::class);
+        $app->filter('embed_template', 15)->bind(Filters\Templates\EmbedHandler::class);
+        $app->filter('get_search_form', 15)->bind(Filters\SearchFormHandler::class);
+        
+        $app->filter('theme_page_templates', 15)->bind(Filters\Templates\CustomHandler::class);
     }
 
-
-    $app->view->share('__viewpress', $app);
-    extract($app->view->getShared());
-
-    // Register the various action events.
-    $app->action('after_setup_theme', 15)->bind(Actions\AfterThemeSetup::class);
-
-    // Register the various filter events.
-    $app->filter('index_template', 15)->bind(Filters\Templates\IndexHandler::class);
-    $app->filter('404_template', 15)->bind(Filters\Templates\NotFoundHandler::class);
-    $app->filter('archive_template', 15)->bind(Filters\Templates\ArchiveHandler::class);
-    $app->filter('author_template', 15)->bind(Filters\Templates\AuthorHandler::class);
-    $app->filter('category_template', 15)->bind(Filters\Templates\CategoryHandler::class);
-    $app->filter('tag_template', 15)->bind(Filters\Templates\TagHandler::class);
-    $app->filter('taxonomy_template', 15)->bind(Filters\Templates\TaxonomyHandler::class);
-    $app->filter('date_template', 15)->bind(Filters\Templates\DateHandler::class);
-    $app->filter('home_template', 15)->bind(Filters\Templates\HomeHandler::class);
-    $app->filter('frontpage_template', 15)->bind(Filters\Templates\FrontPageHandler::class);
-    $app->filter('page_template', 15)->bind(Filters\Templates\PageHandler::class);
-    $app->filter('paged_template', 15)->bind(Filters\Templates\PagedHandler::class);
-    $app->filter('search_template', 15)->bind(Filters\Templates\SearchHandler::class);
-    $app->filter('single_template', 15)->bind(Filters\Templates\SingleHandler::class);
-    $app->filter('singular_template', 15)->bind(Filters\Templates\SingularHandler::class);
-    $app->filter('attachment_template', 15)->bind(Filters\Templates\AttachmentHandler::class);
-    $app->filter('embed_template', 15)->bind(Filters\Templates\EmbedHandler::class);
-    $app->filter('get_search_form', 15)->bind(Filters\SearchFormHandler::class);
-    
-    $app->filter('theme_page_templates', 15)->bind(Filters\Templates\CustomHandler::class);
-
-    add_action('wp_after_admin_bar_render', function () {
-        if (! is_admin()) {
-            exit;
-        }
-    }, 15);
-
 } catch (Exception $e) {
-    // ...
+    throw $e;
 }

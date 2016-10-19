@@ -33,18 +33,20 @@ class ViewHandler
     public function handle($template)
     {
         $path = $this->getRelativePath($template);
-        
-        return $this->app->view($path)->render(function ($view, $content) {
-            if ($engine = $view->getEngine() and ! method_exists($engine, 'getCompiler')) {
-                return $view->getPath();
-            }
 
-            if ($compiler = $engine->getCompiler() and ! method_exists($compiler, 'getCompiledPath')) {
-                return $view->getPath();
-            }
+        try {
+            $this->app->view->share('__viewpress', $this->app);
 
-            return $compiler->getCompiledPath($view->getPath());
-        });
+            echo $this->app->view->make($path)->render();
+        } catch (InvalidArgumentException $e) {
+            if ($e->getMessage() === 'Cannot end a section without first starting one.') {
+                exit;
+            }
+        } catch (Exception $e) {
+            // ...
+        } finally {
+            exit;
+        }
     }
 
     /**

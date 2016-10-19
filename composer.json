@@ -13,7 +13,8 @@
         "illuminate/view": "~5.3",
         "illuminate/events": "~5.3",
         "illuminate/filesystem": "~5.3",
-        "illuminate/support": "~5.3"
+        "illuminate/support": "~5.3",
+        "nesbot/carbon": "~1.2"
     },
     "autoload": {
         "files": [

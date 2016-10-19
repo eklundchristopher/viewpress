@@ -2,6 +2,10 @@
 
 namespace EklundChristopher\ViewPress\Actions;
 
+use Illuminate\View\Factory;
+use Illuminate\Events\Dispatcher;
+use Illuminate\Container\Container;
+use Illuminate\View\FileViewFinder;
 use EklundChristopher\ViewPress\Filters;
 use EklundChristopher\ViewPress\Application;
 
@@ -32,6 +36,10 @@ class AfterThemeSetup
      */
     public function handle()
     {
+        if ($viewPath = apply_filters('viewpress_views_path', $this->app->getViewsPath())) {
+            $this->app->view->getFinder()->addLocation($viewPath);
+        }
+
         $this->app->filter('template_include', 15)->bind(Filters\ViewHandler::class);
     }
 }
