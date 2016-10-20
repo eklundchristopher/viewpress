@@ -42,10 +42,10 @@ class ViewHandler
             if ($e->getMessage() === 'Cannot end a section without first starting one.') {
                 exit;
             }
+
+            throw $e;
         } catch (Exception $e) {
-            // ...
-        } finally {
-            exit;
+            throw $e;
         }
     }
 
