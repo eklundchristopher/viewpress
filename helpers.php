@@ -14,7 +14,7 @@ if (! function_exists('viewpress_view'))
      */
     function viewpress_view($template, array $data = [])
     {
-        if (is_admin()) {
+        if (is_admin() and ! defined('DOING_AJAX') and ! DOING_AJAX) {
             return;
         }
         
