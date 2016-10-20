@@ -156,18 +156,6 @@ class Application
     }
 
     /**
-     * Render a view template.
-     *
-     * @param  string  $template
-     * @param  array  $data  []
-     * @return string
-     */
-    public function view($template, array $data = [])
-    {
-        return $this->view->make($template, $data);
-    }
-
-    /**
      * Declare a variable through the @declare directive.
      *
      * @param  string  $name

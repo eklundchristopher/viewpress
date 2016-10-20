@@ -33,7 +33,7 @@ class SearchFormHandler
     public function handle($form)
     {
         if ($this->app->view->exists('searchform')) {
-            return $this->app->view('searchform')->render();
+            return $this->app->view->make('searchform')->render();
         }
 
         return $form;

@@ -36,52 +36,52 @@ try {
     }
 
 
+    $app = new Application;
+
+    if (! is_dir($storagePath = __DIR__.'/compiled/'.wp_get_theme()->stylesheet)) {
+        mkdir($storagePath);
+    }
+
+    // Set the default ViewPress directory paths.
+    $app->setStoragePath($storagePath);
+    $app->setViewsPath(get_stylesheet_directory().'/views');
+
+    list ($filesystem, $resolver) = [new Filesystem, new EngineResolver];
+
+    // Register the view Blade compiler.
+    $compiler = new BladeCompiler($filesystem, $app->getStoragePath());
+
+    $resolver->register('blade', function () use ($compiler, $filesystem, $app) {
+        // Declare variables using @declare('var', 'value')
+        $compiler->directive('declare', function ($expression) {
+            return '<?php extract($__viewpress->declareVariable('.$expression.')); ?>';
+        });
+
+        // Route a view file through a specific controller method, using @through('Controller@method')
+        $compiler->directive('through', function ($expression) use ($app, $compiler) {
+            return '<?php if (is_array($variables = $__viewpress->routeThrough('.$expression.'))): extract($__variables); endif; ?>';
+        });
+
+        return new CompilerEngine($compiler, $filesystem);
+    });
+
+    // Register the view PHP compiler.
+    $resolver->register('php', function () {
+        return new PhpEngine;
+    });
+
+    // Register the view factory.
+    $app->register('view', new Factory(
+        $resolver,
+        new FileViewFinder($filesystem, [$app->getViewsPath()]),
+        new Dispatcher(new Container)
+    ));
+
+
+    $app->view->share('__viewpress', $app);
+    extract($app->view->getShared());
+
     if (! is_admin()) {
-        $app = new Application;
-
-        if (! is_dir($storagePath = __DIR__.'/compiled/'.wp_get_theme()->stylesheet)) {
-            mkdir($storagePath);
-        }
-
-        // Set the default ViewPress directory paths.
-        $app->setStoragePath($storagePath);
-        $app->setViewsPath(get_stylesheet_directory().'/views');
-
-        list ($filesystem, $resolver) = [new Filesystem, new EngineResolver];
-
-        // Register the view Blade compiler.
-        $compiler = new BladeCompiler($filesystem, $app->getStoragePath());
-
-        $resolver->register('blade', function () use ($compiler, $filesystem, $app) {
-            // Declare variables using @declare('var', 'value')
-            $compiler->directive('declare', function ($expression) {
-                return '<?php extract($__viewpress->declareVariable('.$expression.')); ?>';
-            });
-
-            // Route a view file through a specific controller method, using @through('Controller@method')
-            $compiler->directive('through', function ($expression) use ($app, $compiler) {
-                return '<?php if (is_array($variables = $__viewpress->routeThrough('.$expression.'))): extract($__variables); endif; ?>';
-            });
-
-            return new CompilerEngine($compiler, $filesystem);
-        });
-
-        // Register the view PHP compiler.
-        $resolver->register('php', function () {
-            return new PhpEngine;
-        });
-
-        // Register the view factory.
-        $app->register('view', new Factory(
-            $resolver,
-            new FileViewFinder($filesystem, [$app->getViewsPath()]),
-            new Dispatcher(new Container)
-        ));
-
-
-        $app->view->share('__viewpress', $app);
-        extract($app->view->getShared());
-
         // Register the various action events.
         $app->action('after_setup_theme', 15)->bind(Actions\AfterThemeSetup::class);
 
