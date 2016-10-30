@@ -22,6 +22,24 @@ if (! function_exists('viewpress_view'))
     }
 }
 
+if (! function_exists('viewpress_view_exists'))
+{
+    /**
+     * Determine whether a template exists or not.
+     *
+     * @param  string  $template
+     * @return boolean
+     */
+    function viewpress_view_exists($template)
+    {
+        if (is_admin() and defined('DOING_AJAX') and ! DOING_AJAX) {
+            return false;
+        }
+        
+        return Application::getInstance()->view->exists($template);
+    }
+}
+
 if (! function_exists('viewpress_directive'))
 {
     /**
