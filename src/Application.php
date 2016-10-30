@@ -185,7 +185,13 @@ class Application
             throw new Exception(sprintf("Call to undefined method %s::%s", $controller, $method));
         }
 
-        $response = call_user_func_array([new $controller, $method], []);
+        $object = new $controller;
+
+        if (method_exists($controller, 'authorize') and call_user_func_array([$object, 'authorize'], []) !== true) {
+            return [];
+        }
+
+        $response = call_user_func_array([$object, $method], []);
 
         unset($response['__viewpress']);
         unset($response['__env']);

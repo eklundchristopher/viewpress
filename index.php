@@ -59,7 +59,7 @@ try {
 
         // Route a view file through a specific controller method, using @through('Controller@method')
         $compiler->directive('through', function ($expression) use ($app, $compiler) {
-            return '<?php if (is_array($variables = $__viewpress->routeThrough('.$expression.'))): extract($__variables); endif; ?>';
+            return '<?php if (is_array($__variables = $__viewpress->routeThrough('.$expression.'))): extract($__variables); endif; ?>';
         });
 
         return new CompilerEngine($compiler, $filesystem);
