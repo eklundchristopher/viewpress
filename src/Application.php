@@ -175,6 +175,9 @@ class Application
      */
     public function routeThrough($action)
     {
+        $arguments = func_get_args();
+        unset($arguments[0]);
+
         list ($controller, $method) = explode('@', $action);
 
         if (! class_exists($controller)) {
@@ -191,7 +194,7 @@ class Application
             return [];
         }
 
-        $response = call_user_func_array([$object, $method], []);
+        $response = call_user_func_array([$object, $method], $arguments);
 
         unset($response['__viewpress']);
         unset($response['__env']);
